@@ -9,7 +9,7 @@ public class Player {
 	
 	// TODO: User Input
 	public void setUpShips() {
-		
+		//Needs to be updated so that gb.addShips takes user input as parameters)
 		gb.addShip(5,6,4,'W');
 		
 	}
@@ -21,7 +21,7 @@ public class Player {
 	// TODO: User Input
 	public void fire() {
 		// Ask user for location to fire
-		
+		//x , y need to be updated by the user
 		int x = 0;
 		int y = 0;
 		
