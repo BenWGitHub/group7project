@@ -26,10 +26,11 @@ public class GameController {
 		
 		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
-				if(p1.getGameBoard().getBoard()[i][j] != null) {
-					System.out.print("S ");
+				Ship s = p1.getGameBoard().getBoard()[i][j];
+				if(s != null) {
+					System.out.print(s.getId() + " ");
 				} else {
-					System.out.print("N ");
+					System.out.print("NN ");
 				}
 				if(j == 9) {
 					System.out.println();
@@ -43,10 +44,11 @@ public class GameController {
 		
 		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
-				if(p2.getGameBoard().getBoard()[i][j] != null) {
-					System.out.print("S ");
+				Ship s = p2.getGameBoard().getBoard()[i][j];
+				if(s != null) {
+					System.out.print(s.getId() + " ");
 				} else {
-					System.out.print("N ");
+					System.out.print("NN ");
 				}
 				if(j == 9) {
 					System.out.println();
@@ -65,8 +67,8 @@ public class GameController {
 		//: TODO Detect who actually won the game
 		while(true) {
 			
-			p1.fire();
-			p2.fire();
+			p1.fireAt(p2);
+			p2.fireAt(p1);
 			
 			if(!p1.hasShips() || !p2.hasShips()) {
 				break;

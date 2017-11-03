@@ -8,8 +8,8 @@ public class Ship {
 	
 	public Ship(int x, int y, String id) {
 		this.id = id;
-		this.setX(x);
-		this.setY(y);
+		this.x = x;
+		this.y = y;
 	}
 
 	public String getId() {
@@ -21,20 +21,26 @@ public class Ship {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
 
 	public int getY() {
 		return y;
 	}
 
-	public void setY(int y) {
-		this.y = y;
-	}
-	
+
 	@Override
 	public String toString() {
 		return getId();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		Ship s = (Ship)o;
+		
+		if(this.getX() == s.getX() && this.getY() == s.getY()) { 
+			return true; 
+		} else { 
+			return false; 
+		}
 	}
 }

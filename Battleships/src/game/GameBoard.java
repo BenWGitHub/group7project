@@ -36,4 +36,8 @@ public class GameBoard {
 	public Ship getShipAt(int x, int y) {
 		return board[x][y];
 	}
+	
+	public void removeShipAt(int x, int y) {
+		board[x][y] = null;
+	}
 }
