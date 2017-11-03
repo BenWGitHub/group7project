@@ -44,9 +44,9 @@ public class GameController {
 		for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
 				if(p2.getGameBoard().getBoard()[i][j] != null) {
-					System.out.print(p2.getGameBoard().getBoard()[i][j].toString() + " ");
+					System.out.print("S ");
 				} else {
-					System.out.print("U~ ");
+					System.out.print("N ");
 				}
 				if(j == 9) {
 					System.out.println();

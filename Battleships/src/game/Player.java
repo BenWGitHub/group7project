@@ -1,5 +1,7 @@
 package game;
 
+import java.util.Random;
+
 public class Player {
 	private GameBoard gb;
 	
@@ -10,7 +12,21 @@ public class Player {
 	// TODO: User Input
 	public void setUpShips() {
 		//Needs to be updated so that gb.addShips takes user input as parameters)
-		gb.addShip(5,6,4,'W');
+		for(int i = 0; i < 3; i++) {
+			Random rnd = new Random();
+			int dirInt = rnd.nextInt(3);
+			char dir = ' ';
+			if(dirInt == 0) {
+				dir = 'N';
+			} else if(dirInt == 1) {
+				dir = 'E';
+			} else if (dirInt == 2) {
+				dir = 'S';
+			} else {
+				dir = 'W';
+			}
+			gb.addShip(rnd.nextInt(gb.getBoard().length-1),rnd.nextInt(gb.getBoard()[0].length-1),2,dir);
+		}
 		
 	}
 	
@@ -38,7 +54,7 @@ public class Player {
 				}
 			}
 		} else {
-			System.out.println("MISS!");
+			//System.out.println("MISS!");
 		}
 	}
 	
