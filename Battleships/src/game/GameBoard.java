@@ -8,20 +8,20 @@ public class GameBoard {
 	}
 	
 	// TODO: Collision Logic
-	public void addShip(int x, int y, int length, char dir) {
-		if(dir == 'W') {
+	public void addShip(int x, int y, int length, String dir) {
+		if(dir.equals("W")) {
 			for(int i = 0; i < length; i++) {
 				board[x][y-i] = new Ship(x, y-i, "W" + length);
 			}
-		} else if(dir == 'N') {
+		} else if(dir.equals("N")) {
 			for(int i = 0; i < length; i++) {
 				board[x-i][y] = new Ship(x-i, y, "N" + length);
 			}
-		} else if(dir == 'E') {
+		} else if(dir.equals("E")) {
 			for(int i = 0; i < length; i++) {
 				board[x][y+i] = new Ship(x, y+i, "E" + length);
 			}
-		} else if(dir == 'S') {
+		} else if(dir.equals("S")) {
 			for(int i = 0; i < length; i++) {
 				board[x+i][y] = new Ship(x+i, y, "S" + length);
 			}
