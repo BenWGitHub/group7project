@@ -64,17 +64,5 @@ public class GameController {
 		// Break IF either player has no ships remaining
 		// Declare winner
 		
-		//: TODO Detect who actually won the game
-		while(true) {
-			
-			p1.fireAt(p2);
-			p2.fireAt(p1);
-			
-			if(!p1.hasShips() || !p2.hasShips()) {
-				break;
-			}
-		}
-		
-		System.out.println("Congratulations!!!");
 	}
 }
