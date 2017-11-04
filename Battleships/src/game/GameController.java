@@ -1,25 +1,77 @@
 package game;
 
+import java.util.Scanner;
+
+// TODO: Add all user input to this class instead of contained within other classes
 public class GameController {
 
 	private Player p1;
 	private Player p2;
-
+	private Scanner scanner;
+	
 	public GameController() {
 		
-		this.p1 = new Player();
-		this.p2 = new Player();
+		this.p1 = new Player("Player 1");
+		this.p2 = new Player("Player 2");
+		this.scanner = new Scanner(System.in);
 
 		setUpShips();
-		printBoard();
+		printBoard(p1, p2);
+		printBoard(p2, p1);
 
-		// TODO:
-		// LOOP
-		// Allow Player 1 to attack player 2's ships
-		// Allow Player 2 to attack player 1's ships
-		// Break IF either player has no ships remaining
-		// Declare winner
-
+		// TODO: Making sure all targeted locations are in bounds and that coordinates entered are numbers
+		
+		while(true) {
+			
+			int x = -1;
+			int y = -1;
+			
+			System.out.println("Player 1, Please Enter The Coordinates For Where You Would Like To Attack.");
+			System.out.println("X: ");
+			
+			if(scanner.hasNextLine()) {
+				x = scanner.nextInt();
+			}
+			
+			System.out.println("Y: ");
+			
+			if(scanner.hasNextLine()) {
+				y = scanner.nextInt();
+			}
+			
+			p1.fireAt(p2, x, y);
+			
+			if(!p1.hasShips()) {
+				System.out.println("Congratulations Player 1, You've Sunken All Your Enemies Ships!");
+				break;
+			}
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			System.out.println("Player 2, Please Enter The Coordinates For Where You Would Like To Attack.");
+			System.out.println("X: ");
+			
+			if(scanner.hasNextLine()) {
+				x = scanner.nextInt();
+			}
+			
+			System.out.println("Y: ");
+			
+			if(scanner.hasNextLine()) {
+				y = scanner.nextInt();
+			}
+			
+			
+			p2.fireAt(p1, x, y);
+			
+			if(!p2.hasShips()) {
+				System.out.println("Congratulations Player 2, You've Sunken All Your Enemies Ships!");
+				break;
+			}
+			
+			x = -1;
+			y = -1;
+		}
 	}
 
 	private void setUpShips() {
@@ -52,15 +104,15 @@ public class GameController {
 	
 	// TODO: Change printBoard so that it takes a player object and prints their perspective of the game
 	// ((Their gameboard with all ships showing and their opponents gameboard displaying HITS and MISSES
-	private void printBoard() {
+	private void printBoard(Player currentPlayer, Player opposingPlayer) {
 	
 		System.out.println("=============================");
-		System.out.println("Player 1's Board");
+		System.out.println(currentPlayer.getName() + "'s Board");
 		System.out.println("=============================");
 
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				Ship s = p1.getGameBoard().getBoard()[i][j];
+				Ship s = currentPlayer.getGameBoard().getBoard()[i][j];
 				if (s != null) {
 					System.out.print(s.getId() + " ");
 				} else {
@@ -74,12 +126,13 @@ public class GameController {
 
 		System.out.println();
 		System.out.println("=============================");
-		System.out.println("Player 2's Board");
+		System.out.println(opposingPlayer.getName() + "'s Board");
 		System.out.println("=============================");
-
+		// TODO: Make this so that the currentPlayer only knows where they've targeted and not where their opponents
+		// unknown ship locations are
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				Ship s = p2.getGameBoard().getBoard()[i][j];
+				Ship s = opposingPlayer.getGameBoard().getBoard()[i][j];
 				if (s != null) {
 					System.out.print(s.getId() + " ");
 				} else {

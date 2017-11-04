@@ -41,4 +41,17 @@ public class GameBoard {
 	public void removeShipAt(int x, int y) {
 		board[x][y] = null;
 	}
+	
+	public boolean contains(String shipID) {
+		
+		for(int i = 0; i < 10; i++) {
+			for(int j = 0 ; j < 10; j++) {
+				if(board[i][j] != null) {
+					if(board[i][j].getId().equals(shipID)) { return true; }
+				}
+			}
+		}
+		
+		return false;
+	}
 }

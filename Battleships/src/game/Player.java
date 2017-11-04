@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 public class Player {
 	private GameBoard gb;
+	private String name;
 
-	public Player() {
+	public Player(String name) {
 		gb = new GameBoard();
+		this.setName(name);
 	}
 
 	// TODO: User Input
@@ -70,12 +72,23 @@ public class Player {
 		return gb;
 	}
 
-	// TODO: User Input
-	// TODO: Redo this method, re-think the logic
-	public void fireAt(Player p) {
-		// Ask user for location to fire
-		// x , y need to be updated by the user
+	public void fireAt(Player p, int x , int y) {
 
+		if(p.getGameBoard().getBoard()[x][y] != null) {
+			// HIT OR SINK
+			Ship s = p.getGameBoard().getShipAt(x, y);
+			p.getGameBoard().getBoard()[x][y] = null;
+			if(p.getGameBoard().contains(s.getId())) {
+				//HIT
+				System.out.println("HIT");
+			} else  {
+				// SINK
+				System.out.println("SINK");
+			}
+		} else {
+			//MISS
+			System.out.println("MISS");
+		}
 	}
 
 	public boolean hasShips() {
@@ -89,5 +102,13 @@ public class Player {
 		}
 
 		return false;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
