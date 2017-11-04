@@ -1,7 +1,8 @@
 package game;
 
 public class GameBoard {
-	public Ship board[][];
+	private Ship board[][];
+	
 	
 	public GameBoard() {
 		board  = new Ship[10][10];
