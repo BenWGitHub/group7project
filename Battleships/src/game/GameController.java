@@ -2,20 +2,38 @@ package game;
 
 import java.util.Scanner;
 
-// TODO: Add all user input to this class instead of contained within other classes
 public class GameController {
 
 	private Player p1;
 	private Player p2;
 	private Scanner scanner;
+	private int[] shipLengths;
 
 	public GameController() {
 
 		this.p1 = new Player("Player 1");
 		this.p2 = new Player("Player 2");
 		this.scanner = new Scanner(System.in);
+		shipLengths = new int[] {5,4,3,3,2};
+		
 
-		setUpShips();
+		System.out.println("========================");
+		System.out.println("PLAYER 1");
+		System.out.println("========================");
+		
+		for(int i = 0; i < shipLengths.length-1; i ++) {
+			this.addShips(p1, shipLengths[i]);
+		}
+		
+
+		System.out.println("========================");
+		System.out.println("PLAYER 2");
+		System.out.println("========================");
+		
+		for(int i = 0; i < shipLengths.length-1; i ++) {
+			this.addShips(p2, shipLengths[i]);
+		}
+		
 		printBoard(p1, p2);
 		printBoard(p2, p1);
 
@@ -106,36 +124,6 @@ public class GameController {
 		}
 	}
 
-	private void setUpShips() {
-		
-		// Ask Player 1 to set up their ships
-
-		System.out.println("========================");
-		System.out.println("PLAYER 1");
-		System.out.println("========================");
-
-		p1.addShip(5);
-		p1.addShip(4);
-		p1.addShip(3);
-		p1.addShip(3);
-		p1.addShip(2);
-		
-		// Ask Player 2 to set up their ships
-
-		System.out.println("========================");
-		System.out.println("PLAYER 2");
-		System.out.println("========================");
-
-		p2.addShip(5);
-		p2.addShip(4);
-		p2.addShip(3);
-		p2.addShip(3);
-		p2.addShip(2);
-		//
-
-		System.out.println();
-	}
-
 	// TODO: Change printBoard so that it takes a player object and prints their
 	// perspective of the game
 	// ((Their gameboard with all ships showing and their opponents gameboard
@@ -180,6 +168,55 @@ public class GameController {
 				}
 			}
 		}
+	}
+	
+	private void addShips(Player p, int len) {
+		int x, y;
+		String dir = new String("");
+
+		// Ask for user input and assign to x, must be between 0 and 9 (inclusive)
+		Scanner sc = new Scanner(System.in);
+		
+		do {
+			x = -1; 
+			y = -1;
+
+			do {
+				System.out.print("Please Enter The X co-ordinate for your ship between 0 and 9: ");
+				if (sc.hasNextLine()) {
+					x = sc.nextInt();
+				}
+				
+				System.out.print("Please Enter The Y co-ordinate for your ship between 0 and 9: ");
+				
+				if(sc.hasNextLine()) {
+					y = sc.nextInt();
+				}
+	
+				if ((x < 0 || x > 9) || (y < 0 || y > 9)) {
+					System.out.println("Coordinates must be between must be between 0 and 9, Try Again: ");
+				}
+			} while ((x < 0 || x > 9) || (y < 0 || y > 9));
+	
+			
+			// Ask for user input and assign to dir, must be either N, E, S or W
+	
+			sc.nextLine();
+			
+			do {
+				System.out.print("Please Enter A Direction To Place Your Ship (N, E, S or W): ");
+				if (sc.hasNextLine()) {
+					dir = sc.nextLine().trim().toUpperCase();
+				}
+	
+				if (!(dir.equals("N") || dir.equals("E") || dir.equals("S") || dir.equals("W"))) {
+					System.out.println("The Direction Must be N, S, E or W.");
+				}
+			
+			} while (!(dir.equals("N") || dir.equals("E") || dir.equals("S") || dir.equals("W")));
+			
+		
+		} while (!p.addShip(len, x, y, dir));
 	}
 
 }
