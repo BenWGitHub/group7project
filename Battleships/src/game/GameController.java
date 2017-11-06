@@ -34,6 +34,11 @@ public class GameController {
 					scanner.next();
 				}
 				x = scanner.nextInt();
+				
+				if(x < 0 || x > 9) {
+					System.out.println("X must be between 0 and 9 inclusive, Try Again: ");
+				}
+				
 			} while (x < 0 || x > 9);
 
 			do {
@@ -44,11 +49,15 @@ public class GameController {
 					scanner.next();
 				}
 				y = scanner.nextInt();
+				
+				if(y < 0 || y > 9) {
+					System.out.println("Y must be between 0 and 9 inclusive, Try Again: ");
+				}
 			} while (y < 0 || y > 9);
 
 			p1.fireAt(p2, x, y);
 
-			if (!p1.hasShips()) {
+			if (!p2.hasShips()) {
 				System.out.println("Congratulations Player 1, You've Sunken All Your Enemies Ships!");
 				break;
 			}
@@ -56,7 +65,6 @@ public class GameController {
 			///////////////////////////////////////////////////////////////////////////////////////////////////
 
 			System.out.println("Player 2, Please Enter The Coordinates For Where You Would Like To Attack.");
-			System.out.println("X: ");
 
 			do {
 				System.out.println("X: ");
@@ -66,6 +74,10 @@ public class GameController {
 					scanner.next();
 				}
 				x = scanner.nextInt();
+				
+				if(x < 0 || x > 9) {
+					System.out.println("X must be between 0 and 9 inclusive, Try Again: ");
+				}
 			} while (x < 0 || x > 9);
 
 			do {
@@ -76,11 +88,15 @@ public class GameController {
 					scanner.next();
 				}
 				y = scanner.nextInt();
+				
+				if(y < 0 || y > 9) {
+					System.out.println("Y must be between 0 and 9 inclusive, Try Again: ");
+				}
 			} while (y < 0 || y > 9);
 
 			p2.fireAt(p1, x, y);
 
-			if (!p2.hasShips()) {
+			if (!p1.hasShips()) {
 				System.out.println("Congratulations Player 2, You've Sunken All Your Enemies Ships!");
 				break;
 			}
@@ -115,6 +131,7 @@ public class GameController {
 		p2.addShip(3);
 		p2.addShip(3);
 		p2.addShip(2);
+		//
 
 		System.out.println();
 	}
