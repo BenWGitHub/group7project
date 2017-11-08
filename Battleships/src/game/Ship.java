@@ -31,12 +31,11 @@ public class Ship {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Ship) 
-		{
+		if (o instanceof Ship) {
 			Ship s = (Ship) o;
 			if (this.getX() == s.getX() && this.getY() == s.getY()) {
-					return true;
-				} 
+				return true;
+			}
 		}
 		return false;
 	}

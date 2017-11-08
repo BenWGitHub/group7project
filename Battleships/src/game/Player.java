@@ -8,8 +8,17 @@ public class Player {
 		gb = new GameBoard();
 		this.setName(name);
 	}
-	// TODO: Update so that it checks if a coordinate will be within the range of an already placed ship
+	
 	public boolean addShip(int len, int x, int y, String dir) {
+		
+		for(int i = 0; i < gb.getBoard().length; i++) {
+			for(int j = 0;j < gb.getBoard()[i].length; j++) {
+				if(gb.getUsedPositions().contains(new Position(i, y))) {
+					System.out.println("Ships Can Not Be Placed As It Overlaps With Another. Try Again: ");
+					return false;
+				}
+			}
+		}
 		
 		try {
 			gb.addShip(x, y, len, dir);
@@ -20,7 +29,6 @@ public class Player {
 		return true;
 
 	}
-
 
 
 	public void fireAt(Player p, int x , int y) {
@@ -38,7 +46,7 @@ public class Player {
 			}
 		} else {
 			//MISS
-			System.out.println("MISS");
+			System.out.println("MISS (" + x + "," + y + ")");
 		}
 	}
 
