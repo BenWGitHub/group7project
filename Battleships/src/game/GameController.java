@@ -164,6 +164,7 @@ public class GameController {
 		// TODO: Make this so that the currentPlayer only knows where they've targeted
 		// and not where their opponents
 		// unknown ship locations are
+		// unable to track if ships have been hit currently
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				Ship s = opposingPlayer.getGameBoard().getBoard()[i][j];
