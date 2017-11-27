@@ -17,25 +17,12 @@ public class GameController {
 		this.scanner = new Scanner(System.in);
 		shipLengths = new int[] { 5, 4, 3, 3, 2 };
 
-		System.out.println("========================");
-		System.out.println(p1.getName());
-		System.out.println("========================");
+		initialise();
+		gameLoop();
 
-		for (int i = 0; i < shipLengths.length; i++) {
-			this.addShips(p1, shipLengths[i]);
-		}
-
-		System.out.println("========================");
-		System.out.println(p2.getName());
-		System.out.println("========================");
-
-		for (int i = 0; i < shipLengths.length; i++) {
-			this.addShips(p2, shipLengths[i]);
-		}
-
-		printBoard(p1, p2);
-		printBoard(p2, p1);
-
+	}
+	
+	private void gameLoop() {
 		while (true) {
 
 			int x = -1;
@@ -122,8 +109,8 @@ public class GameController {
 
 			} else {
 				p2.fireAt(p1, new Random().nextInt(10), new Random().nextInt(10));
-				
-				if(!p1.hasShips()) {
+
+				if (!p1.hasShips()) {
 					System.out.println("Sorry Player 2, The Computer Has Won! Better Luck Next Time!");
 				}
 			}
@@ -132,6 +119,30 @@ public class GameController {
 			y = -1;
 		}
 	}
+
+	private void initialise() {
+
+		System.out.println("========================");
+		System.out.println(p1.getName());
+		System.out.println("========================");
+
+		for (int i = 0; i < shipLengths.length; i++) {
+			this.addShips(p1, shipLengths[i]);
+		}
+
+		System.out.println("========================");
+		System.out.println(p2.getName());
+		System.out.println("========================");
+
+		for (int i = 0; i < shipLengths.length; i++) {
+			this.addShips(p2, shipLengths[i]);
+		}
+
+		printBoard(p1, p2);
+		printBoard(p2, p1);
+	}
+
+	
 
 	// TODO: Change printBoard so that it takes a player object and prints their
 	// perspective of the game
