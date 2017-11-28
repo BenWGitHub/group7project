@@ -197,7 +197,6 @@ public class GameController {
 
 		// Ask for user input and assign to x, must be between 0 and 9 (inclusive)
 		Scanner sc = new Scanner(System.in);
-
 		do {
 			x = -1;
 			y = -1;
