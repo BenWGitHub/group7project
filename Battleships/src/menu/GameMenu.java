@@ -4,14 +4,12 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import game.GameController;
-import game.Player;
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
@@ -27,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 
 public class GameMenu extends Application {
 
@@ -78,7 +77,7 @@ public class GameMenu extends Application {
 
 	private class GM extends Parent {
 		public GM() {
-			
+
 			VBox menu0 = new VBox(15);
 			VBox menu1 = new VBox(15);
 
@@ -90,72 +89,41 @@ public class GameMenu extends Application {
 			final int offset = 400;
 
 			menu1.setTranslateX(offset);
-			
+
 			MenuButton btnSinglePlayer = new MenuButton(" SINGLEPLAYER");
 			btnSinglePlayer.setOnMouseClicked(event -> {
-				Thread t1 = new Thread(new Runnable(){
-					@Override
-					public void run() {
-						new GameController(new Player("Player 1"), new Player("Computer"));
-					}
-				});
-				t1.start();
+
+				StackPane secondaryLayout = new StackPane();
+				secondaryLayout.getChildren().add(new GameGUI());
+				
+				Scene secondScene = new Scene(secondaryLayout,600,800);
+				Stage secondStage = new Stage();
+				
+				secondStage.setTitle("Single Player Mode");
+				secondStage.setScene(secondScene);
+				secondStage.show();
 			});
 			MenuButton btnMultiPlayer = new MenuButton(" MULTIPLAYER");
-
-			MenuButton btnResume = new MenuButton(" RESUME");
-			btnResume.setOnMouseClicked(event -> {
-				FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
-				ft.setFromValue(1);
-				ft.setToValue(0);
-				ft.setOnFinished(evt -> this.setVisible(false));
-				ft.play();
+			btnMultiPlayer.setOnMouseClicked(event -> {
+				StackPane secondaryLayout = new StackPane();
+				secondaryLayout.getChildren().addAll(new Label("Coming Soon.."));
+				
+				Scene secondScene = new Scene(secondaryLayout,600,800);
+				Stage secondStage = new Stage();
+				
+				secondStage.setTitle("Multi Player Mode");
+				secondStage.setScene(secondScene);
+				secondStage.show();
 			});
 
-			MenuButton btnOptions = new MenuButton(" OPTIONS");
-			btnOptions.setOnMouseClicked(event -> {
-				this.getChildren().add(menu1);
-				TranslateTransition tt0 = new TranslateTransition(Duration.seconds(0.25), menu0);
-				tt0.setToX(menu0.getTranslateX() - offset);
-
-				TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu1);
-				tt1.setToX(menu0.getTranslateX());
-
-				tt0.play();
-				tt1.play();
-
-				tt0.setOnFinished(evt -> {
-					this.getChildren().remove(menu0);
-				});
-			});
 
 			MenuButton btnExit = new MenuButton(" EXIT");
 			btnExit.setOnMouseClicked(event -> {
 				System.exit(0);
 			});
 
-			MenuButton btnBack = new MenuButton(" BACK");
-			btnBack.setOnMouseClicked(event -> {
-				this.getChildren().add(menu0);
-				TranslateTransition tt0 = new TranslateTransition(Duration.seconds(0.25), menu1);
-				tt0.setToX(menu1.getTranslateX() - offset);
 
-				TranslateTransition tt1 = new TranslateTransition(Duration.seconds(0.5), menu0);
-				tt1.setToX(menu1.getTranslateX());
-
-				tt0.play();
-				tt1.play();
-
-				tt0.setOnFinished(evt -> {
-					this.getChildren().remove(menu1);
-				});
-			});
-
-			MenuButton btnSound = new MenuButton(" SOUND");
-			MenuButton btnVideo = new MenuButton(" VIDEO");
-
-			menu0.getChildren().addAll(btnSinglePlayer, btnMultiPlayer, btnResume, btnOptions, btnExit);
-			menu1.getChildren().addAll(btnBack, btnSound, btnVideo);
+			menu0.getChildren().addAll(btnSinglePlayer, btnMultiPlayer, btnExit);
 
 			Rectangle bg = new Rectangle(800, 600);
 			bg.setFill(Color.GRAY);
