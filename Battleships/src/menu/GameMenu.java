@@ -94,7 +94,7 @@ public class GameMenu extends Application {
 			btnSinglePlayer.setOnMouseClicked(event -> {
 
 				StackPane secondaryLayout = new StackPane();
-				secondaryLayout.getChildren().add(new GameGUI());
+				secondaryLayout.getChildren().addAll(new Label("Coming Soon.."));
 				
 				Scene secondScene = new Scene(secondaryLayout,600,800);
 				Stage secondStage = new Stage();
