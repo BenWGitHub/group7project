@@ -86,7 +86,7 @@ public class GameController extends Application {
             Cell cell = (Cell) event.getSource();
             if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
                 if (--shipsToPlace == 0) {
-                    startGame();
+                    start();
                 }
             }
         });
@@ -102,9 +102,11 @@ public class GameController extends Application {
     enum Result {
     		WIN, LOSE;
     }
-    
+
+    //Opens a small popup window which displays if you won or lost the match
     private void printGameResult(Result r) {
-    		Label label = new Label();
+
+    	Label label = new Label();
     		if(r.equals(Result.WIN)) {
     			label.setText("YOU WIN!");
     		} else {
@@ -121,7 +123,7 @@ public class GameController extends Application {
     		stage.show(); 
     }
 
-    private void startGame() {
+    private void start() {
         // place enemy ships
         int type = 5;
 
