@@ -9,8 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
 
 public class Battleships extends Application {
 
@@ -38,8 +40,7 @@ public class Battleships extends Application {
             enemyTurn = !cell.shoot();
 
             if (enemyBoard.ships == 0) {
-                System.out.println("YOU WIN");
-                System.exit(0);
+                printGameResult(Result.WIN);
             }
 
             if (enemyTurn)
@@ -78,10 +79,31 @@ public class Battleships extends Application {
             enemyTurn = cell.shoot();
 
             if (playerBoard.ships == 0) {
-                System.out.println("YOU LOSE");
-                System.exit(0);
+            		printGameResult(Result.LOSE);
             }
         }
+    }
+    
+    enum Result {
+    		WIN, LOSE;
+    }
+    
+    private void printGameResult(Result r) {
+    		Label label = new Label();
+    		if(r.equals(Result.WIN)) {
+    			label.setText("YOU WIN!");
+    		} else {
+    			label.setText("YOU LOSE");
+    		}
+    		StackPane sp = new StackPane();
+    		sp.getChildren().add(label);
+    		
+    		Scene resultScene = new Scene(sp, 200, 100);
+    		
+    		Stage stage = new Stage();
+    		stage.setTitle("Good Game!");
+    		stage.setScene(resultScene);
+    		stage.show(); 
     }
 
     private void startGame() {

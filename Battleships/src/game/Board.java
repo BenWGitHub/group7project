@@ -18,6 +18,7 @@ public class Board extends Parent {
     public int ships = 5;
 
     public Board(boolean enemy, EventHandler<? super MouseEvent> handler) {
+    	//Make a 10 x 10 grid of cells
         this.enemy = enemy;
         for (int y = 0; y < 10; y++) {
             HBox row = new HBox();
