@@ -4,22 +4,21 @@ import java.util.Random;
 
 import game.Board.Cell;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.*;
 
-public class Battleships extends Application {
+public class GameController extends Application {
 
 	Stage stage = new Stage();
 	
-    private boolean running = false;
+    private boolean inGame = false;
     private Board enemyBoard, playerBoard;
 
     private int shipsToPlace = 5;
@@ -27,18 +26,34 @@ public class Battleships extends Application {
     private boolean enemyTurn = false;
 
     private Random random = new Random();
+    
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Scene scene = new Scene(addScene());
+        primaryStage.setTitle("Battleship");
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+        primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(event -> {
+        		stage.close();
+        });
+    }
 
-    private Parent createContent() {
+    private Parent addScene() {
         BorderPane root = new BorderPane();
         root.setPrefSize(600, 800);
 
         enemyBoard = new Board(true, event -> {
-            if (!running)
+            if (!inGame) {
                 return;
+            }
 
             Cell cell = (Cell) event.getSource();
-            if (cell.wasShot)
+            //If a call has been shot at twice do nothing
+            if (cell.wasShot) {
                 return;
+            }
 
             enemyTurn = !cell.shoot();
 
@@ -46,12 +61,26 @@ public class Battleships extends Application {
                 printGameResult(Result.WIN);
             }
 
-            if (enemyTurn)
-                enemyMove();
+            if (enemyTurn) {
+            	while (enemyTurn) {
+                    int x = random.nextInt(10);
+                    int y = random.nextInt(10);
+
+                    Cell c = playerBoard.getCell(x, y);
+                    if (c.wasShot)
+                        continue;
+
+                    enemyTurn = c.shoot();
+
+                    if (playerBoard.ships == 0) {
+                    		printGameResult(Result.LOSE);
+                    }
+                }
+            }
         });
 
         playerBoard = new Board(false, event -> {
-            if (running)
+            if (inGame)
                 return;
 
             Cell cell = (Cell) event.getSource();
@@ -70,23 +99,6 @@ public class Battleships extends Application {
         return root;
     }
 
-    private void enemyMove() {
-        while (enemyTurn) {
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
-
-            Cell cell = playerBoard.getCell(x, y);
-            if (cell.wasShot)
-                continue;
-
-            enemyTurn = cell.shoot();
-
-            if (playerBoard.ships == 0) {
-            		printGameResult(Result.LOSE);
-            }
-        }
-    }
-    
     enum Result {
     		WIN, LOSE;
     }
@@ -114,6 +126,7 @@ public class Battleships extends Application {
         int type = 5;
 
         while (type > 0) {
+        		//TODO: Make AI more sophisticated 
         		//The computer places a random ship on the enemies gameboard.
             int x = random.nextInt(10);
             int y = random.nextInt(10);
@@ -123,19 +136,8 @@ public class Battleships extends Application {
             }
         }
 
-        running = true;
+        inGame = true;
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(createContent());
-        primaryStage.setTitle("Battleship");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-        
-        primaryStage.setOnCloseRequest(event -> {
-        		stage.close();
-        });
-    }
+    
 }
