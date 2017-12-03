@@ -17,6 +17,8 @@ import javafx.scene.control.*;
 
 public class Battleships extends Application {
 
+	Stage stage = new Stage();
+	
     private boolean running = false;
     private Board enemyBoard, playerBoard;
 
@@ -101,7 +103,7 @@ public class Battleships extends Application {
     		
     		Scene resultScene = new Scene(sp, 200, 100);
     		
-    		Stage stage = new Stage();
+    		
     		stage.setTitle("Good Game!");
     		stage.setScene(resultScene);
     		stage.show(); 
@@ -131,5 +133,9 @@ public class Battleships extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(event -> {
+        		stage.close();
+        });
     }
 }
