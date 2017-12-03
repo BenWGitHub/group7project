@@ -1,7 +1,8 @@
-package test;
+package game;
 
 import java.util.Random;
 
+import game.Board.Cell;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -10,7 +11,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import test.Board.Cell;
 
 public class Battleships extends Application {
 

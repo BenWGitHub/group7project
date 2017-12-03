@@ -1,4 +1,4 @@
-package test;
+package game;
 
 import javafx.scene.Parent;
 

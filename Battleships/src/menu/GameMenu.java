@@ -1,11 +1,10 @@
 package menu;
 
-import test.Battleships;
-
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import game.Battleships;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
