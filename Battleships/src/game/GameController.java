@@ -110,10 +110,10 @@ public class GameController extends Application {
     		} else {
     			label.setText("YOU LOSE");
     		}
-    		StackPane sp = new StackPane();
-    		sp.getChildren().add(label);
+    		StackPane layout = new StackPane();
+    		layout.getChildren().add(label);
     		
-    		Scene resultScene = new Scene(sp, 200, 100);
+    		Scene resultScene = new Scene(layout, 200, 100);
     		
     		
     		stage.setTitle("Good Game!");
