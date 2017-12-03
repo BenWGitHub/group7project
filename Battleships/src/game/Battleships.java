@@ -89,6 +89,7 @@ public class Battleships extends Application {
         int type = 5;
 
         while (type > 0) {
+        		//The computer places a random ship on the enemies gameboard.
             int x = random.nextInt(10);
             int y = random.nextInt(10);
 
