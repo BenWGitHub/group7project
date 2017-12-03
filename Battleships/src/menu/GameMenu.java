@@ -1,5 +1,7 @@
 package menu;
 
+import test.Battleships;
+
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -93,15 +95,23 @@ public class GameMenu extends Application {
 			MenuButton btnSinglePlayer = new MenuButton(" SINGLEPLAYER");
 			btnSinglePlayer.setOnMouseClicked(event -> {
 
-				StackPane secondaryLayout = new StackPane();
-				secondaryLayout.getChildren().addAll(new Label("Coming Soon.."));
+//				StackPane secondaryLayout = new StackPane();
+//				secondaryLayout.getChildren().addAll(new Label("Coming Soon.."));
+//				
+//				Scene secondScene = new Scene(secondaryLayout,600,800);
+//				Stage secondStage = new Stage();
+//				
+//				secondStage.setTitle("Single Player Mode");
+//				secondStage.setScene(secondScene);
+//				secondStage.show();
 				
-				Scene secondScene = new Scene(secondaryLayout,600,800);
-				Stage secondStage = new Stage();
-				
-				secondStage.setTitle("Single Player Mode");
-				secondStage.setScene(secondScene);
-				secondStage.show();
+				Battleships bs = new Battleships();
+				try {
+					bs.start(new Stage());
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Failed to launch game");
+				}
 			});
 			MenuButton btnMultiPlayer = new MenuButton(" MULTIPLAYER");
 			btnMultiPlayer.setOnMouseClicked(event -> {
