@@ -142,7 +142,7 @@ public class GameController {
         right.setAlignment(Pos.CENTER);
         
         HBox top = new HBox(50, left, right);
-        HBox bottom = new HBox(50, exitBtn);
+        HBox bottom = new HBox(50, exitBtn, new Button("Hi"));
         bottom.setAlignment(Pos.CENTER);
         
         VBox vbox = new VBox(50, top, bottom);
