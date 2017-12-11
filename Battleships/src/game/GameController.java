@@ -4,25 +4,28 @@ import java.util.Random;
 
 
 import game.Board.Cell;
-import javafx.application.Application;
 import javafx.geometry.Insets;
+
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.event.EventHandler;
+import javafx.event.*;
 
-public class GameController extends Application {
+public class GameController {
 
-	Stage stage = new Stage();
+	private Scene scene = new Scene(addScene());
+	private Stage stage = new Stage();
+	private EventHandler<ActionEvent> onCloseEvent;
 	
     private boolean inGame = false;
     private Board enemyBoard, playerBoard;
@@ -32,19 +35,13 @@ public class GameController extends Application {
     private boolean enemyTurn = false;
 
     private Random random = new Random();
+   
+    public GameController(EventHandler<ActionEvent> onCloseEvent) {
+    		this.onCloseEvent = onCloseEvent;
+    }
     
-    @Override
-    public void start(Stage primaryStage) throws Exception 
-    {
-        Scene scene = new Scene(addScene());
-        primaryStage.setTitle("Battleship");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-        primaryStage.show();
-        
-        primaryStage.setOnCloseRequest(event -> {
-        		stage.close();
-        });
+    public Scene getScene() {
+    		return scene;
     }
 
     private Parent addScene() 
@@ -97,15 +94,44 @@ public class GameController extends Application {
                 return;
 
             Cell cell = (Cell) event.getSource();
-            if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) 
-            {
-                if (--shipsToPlace == 0) 
-                {
-                    start();
+
+            // if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton() == MouseButton.PRIMARY) (right click)
+            if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
+                if (--shipsToPlace == 0) {
+                    startGame();
                 }
             }
         });
         
+		Button exitBtn = new Button("Exit");
+		exitBtn.setOnMouseClicked(event -> {
+			Stage stage = new Stage();
+		
+			VBox layout = new VBox(10);
+			layout.setAlignment(Pos.CENTER);
+			Label question = new Label("Are You Sure You Want to Exit?");
+		
+			Button yesBtn = new Button("Yes");
+			yesBtn.setOnAction(onCloseEvent);
+		
+			Button noBtn = new Button("No");
+		
+			noBtn.setOnAction(noEvent -> {
+				stage.close();
+			});
+			HBox buttonBox = new HBox(10);
+			buttonBox.setAlignment(Pos.CENTER);
+		
+			buttonBox.getChildren().addAll(yesBtn, noBtn);
+			layout.getChildren().addAll(question, buttonBox);
+		
+			Scene resultScene = new Scene(layout, 200, 100);
+		
+			stage.setTitle("Exit");
+			stage.setScene(resultScene);
+			stage.show();
+		});
+
         String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
         
         Text gameText = new Text(intro);
@@ -115,11 +141,10 @@ public class GameController extends Application {
         vbox.setAlignment(Pos.CENTER);
         //vbox.setTranslateX(50);
         
-        HBox hbox = new HBox(50, vbox, gameText);
+        HBox hbox = new HBox(50, vbox, gameText, exitBtn);
         hbox.setAlignment(Pos.CENTER);
         hbox.setPadding(new Insets (50,50,50,50));
         root.setCenter(hbox);
-        
 
         return root;
     }
@@ -149,12 +174,11 @@ public class GameController extends Application {
     		stage.show(); 
     }
 
-    private void start() {
+    private void startGame() {
         // place enemy ships
         int type = 5;
 
         while (type > 0) {
-        		//TODO: Make AI more sophisticated 
         		//The computer places a random ship on the enemies gameboard.
             int x = random.nextInt(10);
             int y = random.nextInt(10);
