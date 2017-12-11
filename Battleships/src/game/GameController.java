@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import game.Board.Cell;
@@ -138,10 +139,10 @@ public class GameController {
         
         VBox vbox = new VBox(50, enemyBoard, playerBoard);
         vbox.setAlignment(Pos.CENTER);
-        //vbox.setTranslateX(50);
         
         HBox hbox = new HBox(50, vbox, gameText, exitBtn);
         hbox.setAlignment(Pos.CENTER);
+        gameText.setTranslateY(40);
         hbox.setPadding(new Insets (50,50,50,50));
         root.setCenter(hbox);
 
@@ -188,6 +189,26 @@ public class GameController {
         }
 
         inGame = true;
+    }
+    
+    private String enemyResponse() 
+    {
+		String response = "";
+    		Random rnd = new Random();
+    		String[] hitResponses = new String[10];
+    		
+    		hitResponses[0] = "Take that!";
+    		hitResponses[1] = "You're finished!";
+    		hitResponses[2] = "Get fucked cunt!"; //dont leave this 
+    		hitResponses[3] = "I'll end you!";
+    		hitResponses[4] = "*Teleports onto ship* Nothing personal kid!";
+    		hitResponses[5] = "I attack your life points directly!";
+    		hitResponses[6] = "Null pointer error, remains of your ego not found.";
+    		
+    		response = hitResponses[rnd.nextInt(hitResponses.length-1)];
+    		
+    		return response;
+   
     }
 
     
