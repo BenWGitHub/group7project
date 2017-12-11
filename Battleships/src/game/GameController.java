@@ -2,16 +2,22 @@ package game;
 
 import java.util.Random;
 
+
 import game.Board.Cell;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GameController extends Application {
@@ -28,11 +34,12 @@ public class GameController extends Application {
     private Random random = new Random();
     
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws Exception 
+    {
         Scene scene = new Scene(addScene());
         primaryStage.setTitle("Battleship");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
         
         primaryStage.setOnCloseRequest(event -> {
@@ -40,7 +47,8 @@ public class GameController extends Application {
         });
     }
 
-    private Parent addScene() {
+    private Parent addScene() 
+    {
         BorderPane root = new BorderPane();
         root.setPrefSize(600, 800);
 
@@ -51,18 +59,22 @@ public class GameController extends Application {
 
             Cell cell = (Cell) event.getSource();
             //If a call has been shot at twice do nothing
-            if (cell.wasShot) {
+            if (cell.wasShot) 
+            {
                 return;
             }
 
             enemyTurn = !cell.shoot();
 
-            if (enemyBoard.ships == 0) {
+            if (enemyBoard.ships == 0) 
+            {
                 printGameResult(Result.WIN);
             }
 
-            if (enemyTurn) {
-            	while (enemyTurn) {
+            if (enemyTurn) 
+            {
+            		while (enemyTurn) 
+            		{
                     int x = random.nextInt(10);
                     int y = random.nextInt(10);
 
@@ -72,7 +84,8 @@ public class GameController extends Application {
 
                     enemyTurn = c.shoot();
 
-                    if (playerBoard.ships == 0) {
+                    if (playerBoard.ships == 0) 
+                    {
                     		printGameResult(Result.LOSE);
                     }
                 }
@@ -84,22 +97,35 @@ public class GameController extends Application {
                 return;
 
             Cell cell = (Cell) event.getSource();
-            if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
-                if (--shipsToPlace == 0) {
+            if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) 
+            {
+                if (--shipsToPlace == 0) 
+                {
                     start();
                 }
             }
         });
-
+        
+        String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
+        
+        Text gameText = new Text(intro);
+        gameText.setFill(Color.BLACK);
+        
         VBox vbox = new VBox(50, enemyBoard, playerBoard);
         vbox.setAlignment(Pos.CENTER);
-
-        root.setCenter(vbox);
+        //vbox.setTranslateX(50);
+        
+        HBox hbox = new HBox(50, vbox, gameText);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setPadding(new Insets (50,50,50,50));
+        root.setCenter(hbox);
+        
 
         return root;
     }
 
-    enum Result {
+    enum Result 
+    {
     		WIN, LOSE;
     }
 
