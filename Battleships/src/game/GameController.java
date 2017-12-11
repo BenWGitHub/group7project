@@ -3,20 +3,25 @@ package game;
 import java.util.Random;
 
 import game.Board.Cell;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.event.*;
 
-public class GameController extends Application {
+public class GameController {
 
-	Stage stage = new Stage();
+	private Scene scene = new Scene(addScene());
+	private Stage stage = new Stage();
+	private EventHandler<ActionEvent> onCloseEvent;
 	
     private boolean inGame = false;
     private Board enemyBoard, playerBoard;
@@ -27,17 +32,12 @@ public class GameController extends Application {
 
     private Random random = new Random();
     
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(addScene());
-        primaryStage.setTitle("Battleship");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
-        
-        primaryStage.setOnCloseRequest(event -> {
-        		stage.close();
-        });
+    public GameController(EventHandler<ActionEvent> onCloseEvent) {
+    		this.onCloseEvent = onCloseEvent;
+    }
+    
+    public Scene getScene() {
+    		return scene;
     }
 
     private Parent addScene() {
@@ -84,17 +84,48 @@ public class GameController extends Application {
                 return;
 
             Cell cell = (Cell) event.getSource();
+            // if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton() == MouseButton.PRIMARY) (right click)
             if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
                 if (--shipsToPlace == 0) {
-                    start();
+                    startGame();
                 }
             }
         });
+        
+        
+        Button exitBtn = new Button("Exit");
+        exitBtn.setOnMouseClicked(event -> {
+        	Stage stage = new Stage();
 
-        VBox vbox = new VBox(50, enemyBoard, playerBoard);
+			VBox layout = new VBox(10);
+			layout.setAlignment(Pos.CENTER);
+			Label question = new Label("Are You Sure You Want to Exit?");
+
+			Button yesBtn = new Button("Yes");
+			yesBtn.setOnAction(onCloseEvent);
+
+			Button noBtn = new Button("No");
+
+			noBtn.setOnAction(noEvent -> {
+				stage.close();
+			});
+			HBox buttonBox = new HBox(10);
+			buttonBox.setAlignment(Pos.CENTER);
+
+			buttonBox.getChildren().addAll(yesBtn, noBtn);
+			layout.getChildren().addAll(question, buttonBox);
+
+			Scene resultScene = new Scene(layout, 200, 100);
+
+			stage.setTitle("Exit");
+			stage.setScene(resultScene);
+			stage.show();
+        });
+
+        VBox vbox = new VBox(50, enemyBoard, playerBoard, exitBtn);
         vbox.setAlignment(Pos.CENTER);
-
         root.setCenter(vbox);
+        
 
         return root;
     }
@@ -123,12 +154,11 @@ public class GameController extends Application {
     		stage.show(); 
     }
 
-    private void start() {
+    private void startGame() {
         // place enemy ships
         int type = 5;
 
         while (type > 0) {
-        		//TODO: Make AI more sophisticated 
         		//The computer places a random ship on the enemies gameboard.
             int x = random.nextInt(10);
             int y = random.nextInt(10);

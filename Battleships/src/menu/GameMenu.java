@@ -11,31 +11,35 @@ import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.control.*;
 
 public class GameMenu extends Application {
 
 	private GM gm;
+	private Scene scene;
+	private Stage primaryStage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		this.primaryStage = primaryStage;
 		Pane root = new Pane();
 		root.setPrefSize(800, 600);
 
@@ -51,7 +55,7 @@ public class GameMenu extends Application {
 
 		root.getChildren().addAll(imgView, gm);
 
-		Scene scene = new Scene(root);
+		scene = new Scene(root);
 
 		scene.setOnKeyPressed(event -> {
 
@@ -94,9 +98,13 @@ public class GameMenu extends Application {
 
 			MenuButton btnSinglePlayer = new MenuButton(" SINGLEPLAYER");
 			btnSinglePlayer.setOnMouseClicked(event -> {
-				GameController game = new GameController();
+				GameController game = new GameController(controllerEvent -> {
+					primaryStage.setScene(scene);
+				});
 				try {
-					game.start(new Stage());
+					Scene temp = game.getScene();
+					primaryStage.setScene(temp);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("Failed to launch game");
