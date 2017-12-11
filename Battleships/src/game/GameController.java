@@ -1,6 +1,5 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import game.Board.Cell;
@@ -137,14 +136,24 @@ public class GameController {
         Text gameText = new Text(intro);
         gameText.setFill(Color.BLACK);
         
-        VBox vbox = new VBox(50, enemyBoard, playerBoard);
-        vbox.setAlignment(Pos.CENTER);
+        VBox left = new VBox(50, enemyBoard, playerBoard);
+        left.setAlignment(Pos.CENTER);
+        VBox right = new VBox(50, gameText);
+        right.setAlignment(Pos.CENTER);
         
-        HBox hbox = new HBox(50, vbox, gameText, exitBtn);
-        hbox.setAlignment(Pos.CENTER);
-        gameText.setTranslateY(40);
-        hbox.setPadding(new Insets (50,50,50,50));
-        root.setCenter(hbox);
+        HBox top = new HBox(50, left, right);
+        HBox bottom = new HBox(50, exitBtn);
+        bottom.setAlignment(Pos.CENTER);
+        
+        VBox vbox = new VBox(50, top, bottom);
+        vbox.setAlignment(Pos.CENTER);
+
+        vbox.setPadding(new Insets (50,50,50,50));
+        
+        StackPane mainPane = new StackPane();
+        mainPane.getChildren().addAll(vbox);
+        
+        root.setCenter(mainPane);
 
         return root;
     }
