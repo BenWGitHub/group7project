@@ -5,6 +5,7 @@ import java.util.Random;
 import game.Board.Cell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class GameController {
@@ -31,7 +34,7 @@ public class GameController {
     private boolean enemyTurn = false;
 
     private Random random = new Random();
-    
+   
     public GameController(EventHandler<ActionEvent> onCloseEvent) {
     		this.onCloseEvent = onCloseEvent;
     }
@@ -40,7 +43,8 @@ public class GameController {
     		return scene;
     }
 
-    private Parent addScene() {
+    private Parent addScene() 
+    {
         BorderPane root = new BorderPane();
         root.setPrefSize(600, 800);
 
@@ -51,18 +55,22 @@ public class GameController {
 
             Cell cell = (Cell) event.getSource();
             //If a call has been shot at twice do nothing
-            if (cell.wasShot) {
+            if (cell.wasShot) 
+            {
                 return;
             }
 
             enemyTurn = !cell.shoot();
 
-            if (enemyBoard.ships == 0) {
+            if (enemyBoard.ships == 0) 
+            {
                 printGameResult(Result.WIN);
             }
 
-            if (enemyTurn) {
-            	while (enemyTurn) {
+            if (enemyTurn) 
+            {
+            		while (enemyTurn) 
+            		{
                     int x = random.nextInt(10);
                     int y = random.nextInt(10);
 
@@ -72,7 +80,8 @@ public class GameController {
 
                     enemyTurn = c.shoot();
 
-                    if (playerBoard.ships == 0) {
+                    if (playerBoard.ships == 0) 
+                    {
                     		printGameResult(Result.LOSE);
                     }
                 }
@@ -84,6 +93,7 @@ public class GameController {
                 return;
 
             Cell cell = (Cell) event.getSource();
+
             // if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton() == MouseButton.PRIMARY) (right click)
             if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
                 if (--shipsToPlace == 0) {
@@ -92,45 +102,54 @@ public class GameController {
             }
         });
         
-        
-        Button exitBtn = new Button("Exit");
-        exitBtn.setOnMouseClicked(event -> {
-        	Stage stage = new Stage();
-
+		Button exitBtn = new Button("Exit");
+		exitBtn.setOnMouseClicked(event -> {
+			Stage stage = new Stage();
+		
 			VBox layout = new VBox(10);
 			layout.setAlignment(Pos.CENTER);
 			Label question = new Label("Are You Sure You Want to Exit?");
-
+		
 			Button yesBtn = new Button("Yes");
 			yesBtn.setOnAction(onCloseEvent);
-
+		
 			Button noBtn = new Button("No");
-
+		
 			noBtn.setOnAction(noEvent -> {
 				stage.close();
 			});
 			HBox buttonBox = new HBox(10);
 			buttonBox.setAlignment(Pos.CENTER);
-
+		
 			buttonBox.getChildren().addAll(yesBtn, noBtn);
 			layout.getChildren().addAll(question, buttonBox);
-
+		
 			Scene resultScene = new Scene(layout, 200, 100);
-
+		
 			stage.setTitle("Exit");
 			stage.setScene(resultScene);
 			stage.show();
-        });
+		});
 
-        VBox vbox = new VBox(50, enemyBoard, playerBoard, exitBtn);
-        vbox.setAlignment(Pos.CENTER);
-        root.setCenter(vbox);
+        String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
         
+        Text gameText = new Text(intro);
+        gameText.setFill(Color.BLACK);
+        
+        VBox vbox = new VBox(50, enemyBoard, playerBoard);
+        vbox.setAlignment(Pos.CENTER);
+        //vbox.setTranslateX(50);
+        
+        HBox hbox = new HBox(50, vbox, gameText, exitBtn);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setPadding(new Insets (50,50,50,50));
+        root.setCenter(hbox);
 
         return root;
     }
 
-    enum Result {
+    enum Result 
+    {
     		WIN, LOSE;
     }
 
