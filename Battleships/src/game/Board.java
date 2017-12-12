@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Board extends Parent {
-	
 
 	private VBox rows = new VBox();
 	private VBox layout = new VBox();
@@ -155,14 +154,21 @@ public class Board extends Parent {
 			setStroke(Color.BLACK);
 
 			this.setOnMouseEntered(event -> {
-				setFill(Color.BLUE);
+				if (getFill().equals(Color.LIGHTGREY)) {
+					setFill(new Color(0.7, 0.7, 0.7, 1.0));
+					setStroke(Color.WHITE);
+					
+				}
 			});
 
-			this.setOnMouseEntered(event -> {
-				setFill(Color.LIGHTGRAY);
+			this.setOnMouseExited(event -> {
+				if (getFill().equals(new Color(0.7, 0.7, 0.7, 1.0))) {
+					setFill(Color.LIGHTGRAY);
+					setStroke(Color.BLACK);
+				}
 			});
 		}
-		//sdfsdfsdf
+
 		public boolean shoot() {
 			wasShot = true;
 			setFill(Color.BLACK);
