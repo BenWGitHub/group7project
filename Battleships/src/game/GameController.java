@@ -33,7 +33,8 @@ public class GameController {
 	private Random random = new Random();
 	private Board enemyBoard, playerBoard;
 	private EventHandler<ActionEvent> onCloseEvent;
-	private String intro = "Welcome to Battleships sailor! \n\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
+	private String intro = "              Welcome to Battleships sailor! \n=================================="
+			+ "\nINSTRUCTIONS:\n\nTo place your ships, left click a cell for vertical placement and right click for horizontal. \n==================================";
 
 	public GameController(EventHandler<ActionEvent> onCloseEvent) {
 

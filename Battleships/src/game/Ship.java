@@ -30,16 +30,16 @@ public class Ship extends Parent {
 
 		hitResponses[0] = "Take that!";
 		hitResponses[1] = "You're finished!";
-		hitResponses[2] = ""; // Don't leave this!!!!!!
+		hitResponses[2] = "You're going down"; 
 		hitResponses[3] = "I'll end you!";
 		hitResponses[4] = "*Teleports onto ship* Nothing personal kid!";
 		hitResponses[5] = "I attack your life points directly!";
 		hitResponses[6] = "Null pointer error, remains of your ego not found.";
-		hitResponses[7] = "7";
-		hitResponses[8] = "8";
-		hitResponses[9] = "9";
+		hitResponses[7] = "You underestimate my power!";
+		hitResponses[8] = "";
+		hitResponses[9] = "";
 
-		return "\n" + hitResponses[rnd.nextInt(hitResponses.length - 1)] ;
+		return "\n\n" + hitResponses[rnd.nextInt(hitResponses.length - 1)] + "\nShip destroyed!";
 	}
 
 	public String shipMissResponse() {
@@ -57,12 +57,7 @@ public class Ship extends Parent {
 		missResponses[8] = "8";
 		missResponses[9] = "9";
 
-		return "\n" + missResponses[rnd.nextInt(missResponses.length - 1)];
-	}
-	
-	public String shipDestroyed()
-	{
-		return "Ship destroyed!";
+		return "\n\n" + missResponses[rnd.nextInt(missResponses.length - 1)];
 	}
 	
 	public GameController getGC() {

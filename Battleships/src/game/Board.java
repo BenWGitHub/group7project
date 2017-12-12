@@ -15,7 +15,6 @@ import javafx.scene.shape.Rectangle;
 
 public class Board extends Parent {
 	
-
 	private VBox rows = new VBox();
 	private VBox layout = new VBox();
 	private boolean enemy = false;
