@@ -39,7 +39,7 @@ public class Ship extends Parent {
 		hitResponses[8] = "";
 		hitResponses[9] = "";
 
-		return "\n\n" + hitResponses[rnd.nextInt(hitResponses.length - 1)] + "\nShip destroyed!";
+		return "\n\n" + "Enemy:\t" + hitResponses[rnd.nextInt(hitResponses.length - 1)] + "\nConsole:\tShip destroyed!";
 	}
 
 	public String shipMissResponse() {
