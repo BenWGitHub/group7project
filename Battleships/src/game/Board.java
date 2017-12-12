@@ -33,7 +33,7 @@ public class Board extends Parent {
 		for (int y = 0; y < 10; y++) {
 			HBox row = new HBox();
 			for (int x = 0; x < 10; x++) {
-				Cell c = new Cell(x, y, this);
+				Cell c = new Cell(x, y, this, enemy);
 				c.setOnMouseClicked(handler);
 				row.getChildren().add(c);
 			}
@@ -144,12 +144,14 @@ public class Board extends Parent {
 		public boolean wasShot = false;
 
 		private Board board;
+		private boolean isEnemy;
 
-		public Cell(int x, int y, Board board) {
+		public Cell(int x, int y, Board board, boolean isEnemy) {
 			super(30, 30);
 			this.x = x;
 			this.y = y;
 			this.board = board;
+			this.isEnemy = isEnemy;
 			setFill(Color.LIGHTGRAY);
 			setStroke(Color.BLACK);
 
@@ -176,7 +178,9 @@ public class Board extends Parent {
 				ship.hit();
 				setFill(Color.RED);
 				if (!ship.isAlive()) {
-					ship.getGC().generateText(ship.shipHitResponse());
+					if(!isEnemy) {
+						ship.getGC().generateText(ship.shipHitResponse());
+					}
 					board.ships--;
 					// display text saying ship was destroyed.
 				}
