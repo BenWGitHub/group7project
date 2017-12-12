@@ -56,6 +56,7 @@ public class GameController {
 		root.autosize();
 
 
+
 		enemyBoard = new Board(true, event -> {
 			if (!inGame) {
 				return;
