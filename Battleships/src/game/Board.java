@@ -198,6 +198,7 @@ public class Board extends Parent {
                 setFill(Color.RED);
                 if (!ship.isAlive()) 
                 {
+                		
                     board.ships--;
                     //display text saying ship was destroyed.
                 }

@@ -1,9 +1,7 @@
 package game;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.Random;
 import game.Board.Cell;
 import javafx.event.ActionEvent;
@@ -14,15 +12,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TextArea;
+
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+
 import javafx.stage.Stage;
 
 public class GameController {
@@ -32,11 +29,11 @@ public class GameController {
 	private boolean inGame = false;
 	private boolean enemyTurn = false;
 	private Stage stage = new Stage();
-	private Text gameText = new Text();
+	private TextArea gameText;
 	private Random random = new Random();
 	private Board enemyBoard, playerBoard;
 	private EventHandler<ActionEvent> onCloseEvent;
-	private String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
+	private String intro = "Welcome to Battleships sailor!\n\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
 
 	public GameController(EventHandler<ActionEvent> onCloseEvent) {
 
@@ -56,15 +53,8 @@ public class GameController {
 
 	private Parent addScene() throws IOException {
 		BorderPane root = new BorderPane();
-		root.setPrefSize(600, 800);
+		root.autosize();
 
-		InputStream is = Files.newInputStream(Paths.get("res/images/sea.jpg"));
-		Image img = new Image(is);
-		is.close();
-
-		ImageView imgView = new ImageView(img);
-		imgView.setFitWidth(800);
-		imgView.setFitHeight(600);
 
 		enemyBoard = new Board(true, event -> {
 			if (!inGame) {
@@ -145,15 +135,16 @@ public class GameController {
 			stage.setScene(resultScene);
 			stage.show();
 		});
-		
-		gameText = new Text(intro);
 
-		gameText.setFill(Color.BLACK);
+		gameText = new TextArea(intro);
+		gameText.setPrefWidth(570);
+		gameText.setPrefHeight(700);
+		gameText.setEditable(false);
 
 		VBox left = new VBox(50, enemyBoard, playerBoard);
 		left.setAlignment(Pos.CENTER);
 		VBox right = new VBox(50, gameText);
-		right.setAlignment(Pos.CENTER_RIGHT);
+		right.setAlignment(Pos.TOP_RIGHT);
 
 		HBox top = new HBox(50, left, right);
 		HBox bottom = new HBox(50, exitBtn);
@@ -168,7 +159,6 @@ public class GameController {
 		mainPane.getChildren().addAll(vbox);
 
 		root.setCenter(mainPane);
-
 		return root;
 	}
 
@@ -203,16 +193,15 @@ public class GameController {
 			// The computer places a random ship on the enemies game board.
 			int x = random.nextInt(10);
 			int y = random.nextInt(10);
-			
+
 			if (enemyBoard.placeShip(new Ship(type, Math.random() < 0.5), x, y)) {
 				type--;
 			}
 		}
 		inGame = true;
 	}
-							
-	void generateText(String text)
-	{
+
+	void generateText(String text) {
 		gameText.setText(text);
 	}
 
