@@ -215,4 +215,5 @@ public class GameController {
 	{
 		gameText.setText(text);
 	}
+
 }
