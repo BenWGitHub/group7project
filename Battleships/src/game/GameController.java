@@ -1,7 +1,10 @@
 package game;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Random;
-
 import game.Board.Cell;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +14,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -22,203 +27,192 @@ import javafx.stage.Stage;
 
 public class GameController {
 
-	private Scene scene = new Scene(addScene());
+	private Scene scene;
+	private int shipsToPlace = 5;
+	private boolean inGame = false;
+	private boolean enemyTurn = false;
 	private Stage stage = new Stage();
+	private Text gameText = new Text();
+	private Random random = new Random();
+	private Board enemyBoard, playerBoard;
 	private EventHandler<ActionEvent> onCloseEvent;
-	
-    private boolean inGame = false;
-    private Board enemyBoard, playerBoard;
+	private String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
 
-    private int shipsToPlace = 5;
+	public GameController(EventHandler<ActionEvent> onCloseEvent) {
 
-    private boolean enemyTurn = false;
+		try {
+			scene = new Scene(addScene());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    private Random random = new Random();
-   
-    public GameController(EventHandler<ActionEvent> onCloseEvent) {
-    		this.onCloseEvent = onCloseEvent;
-    }
-    
-    public Scene getScene() {
-    		return scene;
-    }
+		this.onCloseEvent = onCloseEvent;
+	}
 
-    private Parent addScene() 
-    {
-        BorderPane root = new BorderPane();
-        root.setPrefSize(600, 800);
+	public Scene getScene() {
+		return scene;
+	}
 
-        enemyBoard = new Board(true, event -> {
-            if (!inGame) {
-                return;
-            }
+	private Parent addScene() throws IOException {
+		BorderPane root = new BorderPane();
+		root.setPrefSize(600, 800);
 
-            Cell cell = (Cell) event.getSource();
-            //If a call has been shot at twice do nothing
-            if (cell.wasShot) 
-            {
-                return;
-            }
+		InputStream is = Files.newInputStream(Paths.get("res/images/sea.jpg"));
+		Image img = new Image(is);
+		is.close();
 
-            enemyTurn = !cell.shoot();
+		ImageView imgView = new ImageView(img);
+		imgView.setFitWidth(800);
+		imgView.setFitHeight(600);
 
-            if (enemyBoard.ships == 0) 
-            {
-                printGameResult(Result.WIN);
-            }
+		enemyBoard = new Board(true, event -> {
+			if (!inGame) {
+				return;
+			}
 
-            if (enemyTurn) 
-            {
-            		while (enemyTurn) 
-            		{
-                    int x = random.nextInt(10);
-                    int y = random.nextInt(10);
+			Cell cell = (Cell) event.getSource();
+			// If a call has been shot at twice do nothing
+			if (cell.wasShot) {
+				return;
+			}
 
-                    Cell c = playerBoard.getCell(x, y);
-                    if (c.wasShot)
-                        continue;
+			enemyTurn = !cell.shoot();
 
-                    enemyTurn = c.shoot();
+			if (enemyBoard.ships == 0) {
+				printGameResult(Result.WIN);
+			}
 
-                    if (playerBoard.ships == 0) 
-                    {
-                    		printGameResult(Result.LOSE);
-                    }
-                }
-            }
-        });
+			if (enemyTurn) {
+				while (enemyTurn) {
+					int x = random.nextInt(10);
+					int y = random.nextInt(10);
 
-        playerBoard = new Board(false, event -> {
-            if (inGame)
-                return;
+					Cell c = playerBoard.getCell(x, y);
+					if (c.wasShot)
+						continue;
 
-            Cell cell = (Cell) event.getSource();
+					enemyTurn = c.shoot();
 
-            // if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton() == MouseButton.PRIMARY) (right click)
-            if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x, cell.y)) {
-                if (--shipsToPlace == 0) {
-                    startGame();
-                }
-            }
-        });
-        
+					if (playerBoard.ships == 0) {
+						printGameResult(Result.LOSE);
+					}
+				}
+			}
+		});
+
+		playerBoard = new Board(false, event -> {
+			if (inGame)
+				return;
+
+			Cell cell = (Cell) event.getSource();
+
+			// if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton()
+			// == MouseButton.PRIMARY) (right click)
+			if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x,
+					cell.y)) {
+				if (--shipsToPlace == 0) {
+					startGame();
+				}
+			}
+		});
+
 		Button exitBtn = new Button("Exit");
 		exitBtn.setOnMouseClicked(event -> {
 			Stage stage = new Stage();
-		
+
 			VBox layout = new VBox(10);
 			layout.setAlignment(Pos.CENTER);
 			Label question = new Label("Are You Sure You Want to Exit?");
-		
+
 			Button yesBtn = new Button("Yes");
 			yesBtn.setOnAction(onCloseEvent);
-		
+
 			Button noBtn = new Button("No");
-		
+
 			noBtn.setOnAction(noEvent -> {
 				stage.close();
 			});
 			HBox buttonBox = new HBox(10);
 			buttonBox.setAlignment(Pos.CENTER);
-		
+
 			buttonBox.getChildren().addAll(yesBtn, noBtn);
 			layout.getChildren().addAll(question, buttonBox);
-		
+
 			Scene resultScene = new Scene(layout, 200, 100);
-		
+
 			stage.setTitle("Exit");
 			stage.setScene(resultScene);
 			stage.show();
 		});
+		
+		gameText = new Text(intro);
 
-        String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
-        
-        Text gameText = new Text(intro);
-        gameText.setFill(Color.BLACK);
-        
-        VBox left = new VBox(50, enemyBoard, playerBoard);
-        left.setAlignment(Pos.CENTER);
-        VBox right = new VBox(50, gameText);
-        right.setAlignment(Pos.CENTER);
-        
-        HBox top = new HBox(50, left, right);
-        HBox bottom = new HBox(50, exitBtn);
-        bottom.setAlignment(Pos.CENTER);
-        
-        VBox vbox = new VBox(50, top, bottom);
-        vbox.setAlignment(Pos.CENTER);
+		gameText.setFill(Color.BLACK);
 
-        vbox.setPadding(new Insets (50,50,50,50));
-        
-        StackPane mainPane = new StackPane();
-        mainPane.getChildren().addAll(vbox);
-        
-        root.setCenter(mainPane);
+		VBox left = new VBox(50, enemyBoard, playerBoard);
+		left.setAlignment(Pos.CENTER);
+		VBox right = new VBox(50, gameText);
+		right.setAlignment(Pos.CENTER_RIGHT);
 
-        return root;
-    }
+		HBox top = new HBox(50, left, right);
+		HBox bottom = new HBox(50, exitBtn);
+		bottom.setAlignment(Pos.CENTER);
 
-    enum Result 
-    {
-    		WIN, LOSE;
-    }
+		VBox vbox = new VBox(50, top, bottom);
+		vbox.setAlignment(Pos.CENTER);
 
-    //Opens a small popup window which displays if you won or lost the match
-    private void printGameResult(Result r) {
+		vbox.setPadding(new Insets(50, 50, 50, 50));
 
-    	Label label = new Label();
-    		if(r.equals(Result.WIN)) {
-    			label.setText("YOU WIN!");
-    		} else {
-    			label.setText("YOU LOSE");
-    		}
-    		StackPane layout = new StackPane();
-    		layout.getChildren().add(label);
-    		
-    		Scene resultScene = new Scene(layout, 200, 100);
-    		
-    		
-    		stage.setTitle("Good Game!");
-    		stage.setScene(resultScene);
-    		stage.show(); 
-    }
+		StackPane mainPane = new StackPane();
+		mainPane.getChildren().addAll(vbox);
 
-    private void startGame() {
-        // place enemy ships
-        int type = 5;
+		root.setCenter(mainPane);
 
-        while (type > 0) {
-        		//The computer places a random ship on the enemies gameboard.
-            int x = random.nextInt(10);
-            int y = random.nextInt(10);
+		return root;
+	}
 
-            if (enemyBoard.placeShip(new Ship(type, Math.random() < 0.5), x, y)) {
-                type--;
-            }
-        }
+	enum Result {
+		WIN, LOSE;
+	}
 
-        inGame = true;
-    }
-    
-    private String enemyResponse() 
-    {
-		String response = "";
-    		Random rnd = new Random();
-    		String[] hitResponses = new String[10];
-    		
-    		hitResponses[0] = "Take that!";
-    		hitResponses[1] = "You're finished!";
-    		hitResponses[2] = "Get fucked cunt!"; //dont leave this 
-    		hitResponses[3] = "I'll end you!";
-    		hitResponses[4] = "*Teleports onto ship* Nothing personal kid!";
-    		hitResponses[5] = "I attack your life points directly!";
-    		hitResponses[6] = "Null pointer error, remains of your ego not found.";
-    		
-    		response = hitResponses[rnd.nextInt(hitResponses.length-1)];
-    		
-    		return response;
-   
-    }
+	// Opens a small popup window which displays if you won or lost the match
+	private void printGameResult(Result r) {
 
-    
+		Label label = new Label();
+		if (r.equals(Result.WIN)) {
+			label.setText("YOU WIN!");
+		} else {
+			label.setText("YOU LOSE");
+		}
+		StackPane layout = new StackPane();
+		layout.getChildren().add(label);
+
+		Scene resultScene = new Scene(layout, 200, 100);
+
+		stage.setTitle("Good Game!");
+		stage.setScene(resultScene);
+		stage.show();
+	}
+
+	private void startGame() {
+		// place enemy ships
+		int type = 5;
+
+		while (type > 0) {
+			// The computer places a random ship on the enemies game board.
+			int x = random.nextInt(10);
+			int y = random.nextInt(10);
+			
+			if (enemyBoard.placeShip(new Ship(type, Math.random() < 0.5), x, y)) {
+				type--;
+			}
+		}
+		inGame = true;
+	}
+							
+	void generateText(String text)
+	{
+		gameText.setText(text);
+	}
 }
