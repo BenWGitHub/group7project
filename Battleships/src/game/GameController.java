@@ -58,13 +58,7 @@ public class GameController {
 		BorderPane root = new BorderPane();
 		root.setPrefSize(600, 800);
 
-		InputStream is = Files.newInputStream(Paths.get("res/images/sea.jpg"));
-		Image img = new Image(is);
-		is.close();
 
-		ImageView imgView = new ImageView(img);
-		imgView.setFitWidth(800);
-		imgView.setFitHeight(600);
 
 		enemyBoard = new Board(true, event -> {
 			if (!inGame) {
