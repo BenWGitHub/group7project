@@ -33,7 +33,7 @@ public class GameController {
 	private Random random = new Random();
 	private Board enemyBoard, playerBoard;
 	private EventHandler<ActionEvent> onCloseEvent;
-	private String intro = "Welcome to Battleships sailor!\n\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
+	private String intro = "Welcome to Battleships sailor!\n\nTo place your ships, left click a cell for vertical \nplacement and right click for horizontal.";
 
 	public GameController(EventHandler<ActionEvent> onCloseEvent) {
 
@@ -138,7 +138,7 @@ public class GameController {
 		});
 
 		gameText = new TextArea(intro);
-		gameText.setPrefWidth(570);
+		gameText.setPrefWidth(310);
 		gameText.setPrefHeight(700);
 		gameText.setEditable(false);
 
