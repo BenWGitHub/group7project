@@ -62,4 +62,6 @@ public class Ship extends Parent {
 	{
 		return "Ship destroyed!";
 	}
+	
+	
 }
