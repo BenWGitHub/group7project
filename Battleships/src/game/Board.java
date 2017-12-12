@@ -156,16 +156,15 @@ public class Board extends Parent {
 			this.setOnMouseEntered(event -> {
 				if (getFill().equals(Color.LIGHTGREY)) {
 					setFill(new Color(0.7, 0.7, 0.7, 1.0));
-					setStroke(Color.WHITE);
-					
 				}
+				setStroke(Color.WHITE);
 			});
 
 			this.setOnMouseExited(event -> {
 				if (getFill().equals(new Color(0.7, 0.7, 0.7, 1.0))) {
 					setFill(Color.LIGHTGRAY);
-					setStroke(Color.BLACK);
 				}
+				setStroke(Color.BLACK);
 			});
 		}
 
