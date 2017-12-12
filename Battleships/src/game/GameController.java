@@ -103,36 +103,38 @@ public class GameController {
         });
         
 		Button exitBtn = new Button("Exit");
-		exitBtn.setOnMouseClicked(event -> {
-			Stage stage = new Stage();
+//		exitBtn.setOnMouseClicked(event -> {
+//			Stage stage = new Stage();
+//		
+//			VBox layout = new VBox(10);
+//			layout.setAlignment(Pos.CENTER);
+//			Label question = new Label("Are You Sure You Want to Exit?");
+//		
+//			Button yesBtn = new Button("Yes");
+//			yesBtn.setOnAction(onCloseEvent);
+//			
+//			Button noBtn = new Button("No");
+//		
+//			noBtn.setOnAction(noEvent -> {
+//				stage.close();
+//			});
+//			
+//			HBox buttonBox = new HBox(10);
+//			buttonBox.setAlignment(Pos.CENTER);
+//		
+//			buttonBox.getChildren().addAll(yesBtn, noBtn);
+//			layout.getChildren().addAll(question, buttonBox);
+//		
+//			Scene resultScene = new Scene(layout, 200, 100);
+//		
+//			stage.setTitle("Exit");
+//			stage.setScene(resultScene);
+//			stage.show();
+//		});
 		
-			VBox layout = new VBox(10);
-			layout.setAlignment(Pos.CENTER);
-			Label question = new Label("Are You Sure You Want to Exit?");
+		exitBtn.setOnAction(onCloseEvent);
 		
-			Button yesBtn = new Button("Yes");
-			yesBtn.setOnAction(onCloseEvent);
-			
-			Button noBtn = new Button("No");
-		
-			noBtn.setOnAction(noEvent -> {
-				stage.close();
-			});
-			
-			HBox buttonBox = new HBox(10);
-			buttonBox.setAlignment(Pos.CENTER);
-		
-			buttonBox.getChildren().addAll(yesBtn, noBtn);
-			layout.getChildren().addAll(question, buttonBox);
-		
-			Scene resultScene = new Scene(layout, 200, 100);
-		
-			stage.setTitle("Exit");
-			stage.setScene(resultScene);
-			stage.show();
-		});
-
-        String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
+		String intro = "Welcome to Battleships sailor!\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
         
         Text gameText = new Text(intro);
         gameText.setFill(Color.BLACK);
@@ -143,7 +145,7 @@ public class GameController {
         right.setAlignment(Pos.CENTER);
         
         HBox top = new HBox(50, left, right);
-        HBox bottom = new HBox(50, exitBtn, new Button("Hi"));
+        HBox bottom = new HBox(50, exitBtn);
         bottom.setAlignment(Pos.CENTER);
         
         VBox vbox = new VBox(50, top, bottom);

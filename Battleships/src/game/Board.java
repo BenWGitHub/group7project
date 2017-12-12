@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,11 +16,19 @@ import javafx.scene.shape.Rectangle;
 public class Board extends Parent {
 	
     private VBox rows = new VBox();
+    private VBox layout = new VBox();
     private boolean enemy = false;
     public int ships = 5;
 
     public Board(boolean enemy, EventHandler<? super MouseEvent> handler) 
     {
+    		Label label;
+    		if(enemy) {
+    			label = new Label("Enemy Board");
+    		} else {
+    			label = new Label("Your Board");
+    		}
+    		
     		//Make a 10 x 10 grid of cells
         this.enemy = enemy;
         for (int y = 0; y < 10; y++) 
@@ -33,7 +42,8 @@ public class Board extends Parent {
             }
             rows.getChildren().add(row);
         }
-        getChildren().add(rows);
+        layout.getChildren().addAll(label, rows);
+        getChildren().addAll(layout);
     }
 
     public boolean placeShip(Ship ship, int x, int y) 
