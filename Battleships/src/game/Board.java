@@ -153,13 +153,13 @@ public class Board extends Parent {
 			setFill(Color.LIGHTGRAY);
 			setStroke(Color.BLACK);
 
-			this.setOnMouseEntered(event -> {
-				setFill(Color.BLACK);
-			});
-
-			this.setOnMouseEntered(event -> {
-				setFill(Color.LIGHTGRAY);
-			});
+//			this.setOnMouseEntered(event -> {
+//				setFill(Color.BLACK);
+//			});
+//
+//			this.setOnMouseEntered(event -> {
+//				setFill(Color.LIGHTGRAY);
+//			});
 		}
 
 		public boolean shoot() {
