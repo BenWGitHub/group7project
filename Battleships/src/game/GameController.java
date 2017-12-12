@@ -112,12 +112,13 @@ public class GameController {
 		
 			Button yesBtn = new Button("Yes");
 			yesBtn.setOnAction(onCloseEvent);
-		
+			
 			Button noBtn = new Button("No");
 		
 			noBtn.setOnAction(noEvent -> {
 				stage.close();
 			});
+			
 			HBox buttonBox = new HBox(10);
 			buttonBox.setAlignment(Pos.CENTER);
 		

@@ -1,9 +1,8 @@
 package game;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Parent;
@@ -197,20 +196,4 @@ public class Board extends Parent {
             return false;
         }
     }
-    
-    /*When the cursor passes over a cell, highlight it. 
-    public void highlightCell()
-    {
-    		PointerInfo a = MouseInfo.getPointerInfo();
-    		Point b = a.getLocation();
-    		int x = (int) b.getX();
-    		int y = (int) b.getY();
-    	
-    		if(MouseEvent.MOUSE_ENTERED  )
-    		{
-    			
-    		}
-    	
-    }
-    */
 }
