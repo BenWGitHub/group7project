@@ -33,7 +33,7 @@ public class GameController {
 	private Random random = new Random();
 	private Board enemyBoard, playerBoard;
 	private EventHandler<ActionEvent> onCloseEvent;
-	private String intro = "Welcome to Battleships sailor!\n\nTo place your ships, left click a cell for vertical \nplacement and right click for horizontal.";
+	private String intro = "Welcome to Battleships sailor! \n\nTo place your ships, left click a cell for vertical placement and right click for horizontal.";
 
 	public GameController(EventHandler<ActionEvent> onCloseEvent) {
 
@@ -100,7 +100,7 @@ public class GameController {
 
 			// if event.getButton() == MouseButton.PRIMARY (left click) !(event.getButton()
 			// == MouseButton.PRIMARY) (right click)
-			if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY), cell.x,
+			if (playerBoard.placeShip(new Ship(shipsToPlace, event.getButton() == MouseButton.PRIMARY, this), cell.x,
 					cell.y)) {
 				if (--shipsToPlace == 0) {
 					startGame();
@@ -138,9 +138,11 @@ public class GameController {
 		});
 
 		gameText = new TextArea(intro);
+		gameText.setTranslateY(15.0);
 		gameText.setPrefWidth(310);
-		gameText.setPrefHeight(700);
+		gameText.setPrefHeight(690);
 		gameText.setEditable(false);
+		gameText.setWrapText(true);
 
 		VBox left = new VBox(50, enemyBoard, playerBoard);
 		left.setAlignment(Pos.CENTER);
@@ -195,7 +197,7 @@ public class GameController {
 			int x = random.nextInt(10);
 			int y = random.nextInt(10);
 
-			if (enemyBoard.placeShip(new Ship(type, Math.random() < 0.5), x, y)) {
+			if (enemyBoard.placeShip(new Ship(type, Math.random() < 0.5, this), x, y)) {
 				type--;
 			}
 		}
@@ -203,7 +205,11 @@ public class GameController {
 	}
 
 	void generateText(String text) {
-		gameText.setText(text);
+		gameText.appendText(text);
+	}
+	
+	public GameController getGC() {
+		return this;
 	}
 
 }

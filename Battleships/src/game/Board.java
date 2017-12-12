@@ -154,15 +154,15 @@ public class Board extends Parent {
 			setFill(Color.LIGHTGRAY);
 			setStroke(Color.BLACK);
 
-//			this.setOnMouseEntered(event -> {
-//				setFill(Color.BLACK);
-//			});
-//
-//			this.setOnMouseEntered(event -> {
-//				setFill(Color.LIGHTGRAY);
-//			});
-		}
+			this.setOnMouseEntered(event -> {
+				setFill(Color.BLUE);
+			});
 
+			this.setOnMouseEntered(event -> {
+				setFill(Color.LIGHTGRAY);
+			});
+		}
+		//sdfsdfsdf
 		public boolean shoot() {
 			wasShot = true;
 			setFill(Color.BLACK);
@@ -171,6 +171,7 @@ public class Board extends Parent {
 				ship.hit();
 				setFill(Color.RED);
 				if (!ship.isAlive()) {
+					ship.getGC().generateText(ship.shipHitResponse());
 					board.ships--;
 					// display text saying ship was destroyed.
 				}

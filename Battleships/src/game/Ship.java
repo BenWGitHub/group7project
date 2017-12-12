@@ -7,11 +7,13 @@ public class Ship extends Parent {
 	public int type;
 	public boolean vertical = true;
 	private int health;
+	private GameController gc;
 
-	public Ship(int type, boolean vertical) {
+	public Ship(int type, boolean vertical, GameController gc) {
 		this.type = type;
 		this.vertical = vertical;
 		health = type;
+		this.gc = gc;
 	}
 
 	public void hit() {
@@ -33,11 +35,11 @@ public class Ship extends Parent {
 		hitResponses[4] = "*Teleports onto ship* Nothing personal kid!";
 		hitResponses[5] = "I attack your life points directly!";
 		hitResponses[6] = "Null pointer error, remains of your ego not found.";
-		hitResponses[7] = "";
-		hitResponses[8] = "";
-		hitResponses[9] = "";
+		hitResponses[7] = "7";
+		hitResponses[8] = "8";
+		hitResponses[9] = "9";
 
-		return hitResponses[rnd.nextInt(hitResponses.length - 1)] ;
+		return "\n" + hitResponses[rnd.nextInt(hitResponses.length - 1)] ;
 	}
 
 	public String shipMissResponse() {
@@ -47,20 +49,24 @@ public class Ship extends Parent {
 		missResponses[0] = "Rats";
 		missResponses[1] = "So close";
 		missResponses[2] = "Your move";
-		missResponses[3] = "";
-		missResponses[4] = "";
-		missResponses[5] = "";
-		missResponses[6] = "";
-		missResponses[7] = "";
-		missResponses[8] = "";
-		missResponses[9] = "";
+		missResponses[3] = "3";
+		missResponses[4] = "4";
+		missResponses[5] = "5";
+		missResponses[6] = "6";
+		missResponses[7] = "7";
+		missResponses[8] = "8";
+		missResponses[9] = "9";
 
-		return missResponses[rnd.nextInt(missResponses.length - 1)];
+		return "\n" + missResponses[rnd.nextInt(missResponses.length - 1)];
 	}
 	
 	public String shipDestroyed()
 	{
 		return "Ship destroyed!";
+	}
+	
+	public GameController getGC() {
+		return gc;
 	}
 	
 	
