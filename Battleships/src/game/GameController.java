@@ -55,6 +55,8 @@ public class GameController {
 	private Parent addScene() throws IOException {
 		BorderPane root = new BorderPane();
 		root.autosize();
+		
+		
 
 
 
